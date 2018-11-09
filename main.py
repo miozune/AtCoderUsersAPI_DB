@@ -95,8 +95,8 @@ def main():
             }
 
             # print(data_by_username, data_by_twitter_id)
-            # db.child('by_username').set(data_by_username)
-            # db.child('by_twitter_id').set(data_by_twitter_id)
+            db.child('by_username').set(data_by_username)
+            db.child('by_twitter_id').set(data_by_twitter_id)
 
             print(username)
 
