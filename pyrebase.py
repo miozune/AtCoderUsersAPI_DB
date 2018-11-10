@@ -4,7 +4,7 @@
 # This is simple version of pyrebase (https://github.com/thisbejim/Pyrebase).
 # `pip install pyrebase` fails in my environment because of jws (https://github.com/brianloveswords/python-jws).
 # Please note that this is not enough for original.
-# 2018/11/7 miozune
+# 2018/11/11 miozune
 ##################################################
 
 import requests
