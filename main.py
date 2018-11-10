@@ -43,23 +43,25 @@ def main():
             continue
 
         for tr in table:
-            rank = pq(tr).children().eq(0).text()
+            rank = int(pq(tr).children().eq(0).text())
             country = pq(tr).children().eq(1).children().eq(0).attr('href').split('=')[1]
             formal_country_name = country_names[country]
-            crown_attr = pq(tr).children().eq(1).children('img').attr('src')
-            crown = crown_attr.split('/public/img/icon/')[1].split('.gif')[0] if crown_attr else ''
+            crown = pq(tr).children().eq(1).children('img').attr('src')
+            crown = crown.split('/public/img/icon/')[1].split('.gif')[0] if crown else None
             username = pq(tr).children().eq(1).children('.username').text()
             user_color_elem = pq(tr).children().eq(1).children('.username').children()
             user_color = user_color_elem.attr('class').replace('user-', '') if user_color_elem.attr('class') \
                 else user_color_elem.attr('style').replace('color:', '').replace(';', '')
             affiliation = pq(tr).children().eq(1).children().eq(-1).children().text()
+            affiliation = affiliation if affiliation else None
             birth_year = pq(tr).children().eq(2).text()
-            rating = pq(tr).children().eq(3).text()
-            highest_rating = pq(tr).children().eq(4).text()
-            competitions = pq(tr).children().eq(5).text()
-            wins = pq(tr).children().eq(6).text()
+            birth_year = int(birth_year) if birth_year else None
+            rating = int(pq(tr).children().eq(3).text())
+            highest_rating = int(pq(tr).children().eq(4).text())
+            competitions = int(pq(tr).children().eq(5).text())
+            wins = int(pq(tr).children().eq(6).text())
 
-            twitter_id = ''
+            twitter_id = None
             userpage_html = pq('https://beta.atcoder.jp/users/{}'.format(username))
             user_info = userpage_html.find('.dl-table').find('tr')  # 環境によってtbodyがあったり無かったり?
             for el in user_info:
@@ -100,7 +102,8 @@ def main():
             }
 
             db.child('by_username').child(username).set(data_by_username, user['idToken'])
-            db.child('by_twitter_id').child(twitter_id).set(data_by_twitter_id, user['idToken'])
+            if twitter_id:
+                db.child('by_twitter_id').child(twitter_id).set(data_by_twitter_id, user['idToken'])
 
             print(username)
 
