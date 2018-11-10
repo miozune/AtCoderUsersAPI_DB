@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+from dotenv import load_dotenv
 import os
 from pyquery import PyQuery as pq
 import pyrebase
@@ -10,14 +11,22 @@ from utils import country_names, do_not_scrape, firebase_config, interval
 
 
 def main():
+    firebase = pyrebase.initialize_app(firebase_config)
+    auth = firebase.auth()
+    db = firebase.database()
+
+    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+    load_dotenv(dotenv_path)
+
+    email = os.environ.get('EMAIL')
+    password = os.environ.get('PASSWORD')
+
+    user = auth.sign_in_with_email_and_password(email, password)
+
     if not os.getenv('AtCoderUsersAPI_DB_continuation'):
         print('set')
         os.environ['AtCoderUsersAPI_DB_continuation'] = '1'
     page_id = int(os.environ.get('AtCoderUsersAPI_DB_continuation'))
-
-    firebase = pyrebase.initialize_app(firebase_config)
-    db = firebase.database()
-    # db.child('hoge').set({'message': 'hello'})
 
     while True:
         print('#' * 50)
@@ -60,54 +69,49 @@ def main():
             updated = str(datetime.datetime.today())
 
             data_by_username = {
-                username: {
-                    'rank': rank,
-                    'country': country,
-                    'formal_country_name': formal_country_name,
-                    'crown': crown,
-                    'user_color': user_color,
-                    'affiliation': affiliation,
-                    'birth_year': birth_year,
-                    'rating': rating,
-                    'highest_rating': highest_rating,
-                    'competitions': competitions,
-                    'wins': wins,
-                    'twitter_id': twitter_id,
-                    'updated': updated,
-                }
+                'rank': rank,
+                'country': country,
+                'formal_country_name': formal_country_name,
+                'crown': crown,
+                'user_color': user_color,
+                'affiliation': affiliation,
+                'birth_year': birth_year,
+                'rating': rating,
+                'highest_rating': highest_rating,
+                'competitions': competitions,
+                'wins': wins,
+                'twitter_id': twitter_id,
+                'updated': updated,
             }
             data_by_twitter_id = {
-                twitter_id: {
-                    'rank': rank,
-                    'country': country,
-                    'formal_country_name': formal_country_name,
-                    'crown': crown,
-                    'username': username,
-                    'user_color': user_color,
-                    'affiliation': affiliation,
-                    'birth_year': birth_year,
-                    'rating': rating,
-                    'highest_rating': highest_rating,
-                    'competitions': competitions,
-                    'wins': wins,
-                    'updated': updated,
-                }
+                'rank': rank,
+                'country': country,
+                'formal_country_name': formal_country_name,
+                'crown': crown,
+                'username': username,
+                'user_color': user_color,
+                'affiliation': affiliation,
+                'birth_year': birth_year,
+                'rating': rating,
+                'highest_rating': highest_rating,
+                'competitions': competitions,
+                'wins': wins,
+                'updated': updated,
             }
 
-            # print(data_by_username, data_by_twitter_id)
-            db.child('by_username').set(data_by_username)
-            db.child('by_twitter_id').set(data_by_twitter_id)
+            db.child('by_username').child(username).set(data_by_username, user['idToken'])
+            db.child('by_twitter_id').child(twitter_id).set(data_by_twitter_id, user['idToken'])
 
             print(username)
 
-            if do_not_scrape(datetime.datetime.today()):
-                print('I\'m sleeping...')
-                while True:
-                    print('zzz...')
-                    sleep(10 * 60)
-                    if not do_not_scrape(datetime.datetime.today()):
-                        print('Good morning! Let\'s work!')
-                        break
+            # if do_not_scrape(datetime.datetime.today()):
+            #     print('I\'m sleeping...')
+            #     while True:
+            #         print('zzz...')
+            #         sleep(10 * 60)
+            #         if not do_not_scrape(datetime.datetime.today()):
+            #             print('Good morning! Let\'s work!')
+            #             break
 
             sleep(interval)
 
