@@ -24,7 +24,7 @@ def main():
     user = auth.sign_in_with_email_and_password(email, password)
 
     if not os.getenv('AtCoderUsersAPI_DB_continuation'):
-        print('set')
+        print('set page_id')
         os.environ['AtCoderUsersAPI_DB_continuation'] = '1'
     page_id = int(os.environ.get('AtCoderUsersAPI_DB_continuation'))
 
@@ -107,14 +107,14 @@ def main():
 
             print(username)
 
-            # if do_not_scrape(datetime.datetime.today()):
-            #     print('I\'m sleeping...')
-            #     while True:
-            #         print('zzz...')
-            #         sleep(10 * 60)
-            #         if not do_not_scrape(datetime.datetime.today()):
-            #             print('Good morning! Let\'s work!')
-            #             break
+            if do_not_scrape(datetime.datetime.today()):
+                print('I\'m sleeping...')
+                while True:
+                    print('zzz...')
+                    sleep(10 * 60)
+                    if not do_not_scrape(datetime.datetime.today()):
+                        print('Good morning! Let\'s work!')
+                        break
 
             sleep(interval)
 
