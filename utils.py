@@ -4,8 +4,8 @@ import datetime
 
 
 def do_not_scrape(dt):
-    # Sat.6:00 ~ Mon.6:00 (UTC+9)
-    return 5 <= (dt - datetime.timedelta(hours=6)).weekday() <= 6
+    # Sat.4:00 ~ Mon.4:00 (UTC+9)
+    return 5 <= (dt - datetime.timedelta(hours=4)).weekday() <= 6
 
 
 interval = 5
