@@ -23,10 +23,10 @@ def main():
 
     user = auth.sign_in_with_email_and_password(email, password)
 
-    if not os.getenv('AtCoderUsersAPI_DB_continuation'):
+    if not os.getenv('CONTINUE'):
         print('set page_id')
-        os.environ['AtCoderUsersAPI_DB_continuation'] = '1'
-    page_id = int(os.environ.get('AtCoderUsersAPI_DB_continuation'))
+        os.environ['CONTINUE'] = '1'
+    page_id = int(os.environ.get('CONTINUE'))
 
     while True:
         print('#' * 50)
