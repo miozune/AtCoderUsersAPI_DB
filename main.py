@@ -22,14 +22,14 @@ def main():
     email = os.environ.get('EMAIL')
     password = os.environ.get('PASSWORD')
 
-    user = auth.sign_in_with_email_and_password(email, password)
-
     if not os.getenv('CONTINUE'):
         print('set page_id')
         os.environ['CONTINUE'] = '1'
     page_id = int(os.environ.get('CONTINUE'))
 
     while True:
+        user = auth.sign_in_with_email_and_password(email, password)
+
         print('#' * 50)
         print('page_id == {}'.format(page_id))
         print('#' * 50)
@@ -119,6 +119,7 @@ def main():
                     sleep(10 * 60)
                     if not do_not_scrape(datetime.datetime.today()):
                         print('Good morning! Let\'s work!')
+                        user = auth.sign_in_with_email_and_password(email, password)
                         break
 
             sleep(interval)
