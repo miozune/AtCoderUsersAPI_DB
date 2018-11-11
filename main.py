@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 from pyquery import PyQuery as pq
 import pyrebase
+import re
 from time import sleep
 
 from utils import country_names, do_not_scrape, firebase_config, interval
@@ -70,6 +71,7 @@ def main():
             for el in user_info:
                 if pq(el).children().eq(0).text() == 'twitter ID':
                     twitter_id = pq(el).find('a').text()[1:]
+                    twitter_id = re.sub(r'\W', '', twitter_id)
 
             updated = str(datetime.datetime.today())
 
