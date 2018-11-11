@@ -45,7 +45,10 @@ def main():
         for tr in table:
             rank = int(pq(tr).children().eq(0).text())
             country = pq(tr).children().eq(1).children().eq(0).attr('href').split('=')[1]
-            formal_country_name = country_names[country]
+            if country in country_names:
+                formal_country_name = country_names[country]
+            else:
+                formal_country_name = None
             crown = pq(tr).children().eq(1).children('img').attr('src')
             crown = crown.split('/public/img/icon/')[1].split('.gif')[0] if crown else None
             username = pq(tr).children().eq(1).children('.username').text()

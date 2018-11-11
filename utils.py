@@ -219,5 +219,4 @@ country_names = {
     "YE": "Yemen",
     "ZM": "Zambia",
     "ZW": "Zimbabwe",
-    "XX": None
 }
