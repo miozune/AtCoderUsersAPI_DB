@@ -1,4 +1,11 @@
 # AtCoderUsersAPI_DB
-https://beta.atcoder.jp/ranking からユーザー情報をスクレイピング  
+
+## API仕様
+
+**[AtCoderUsersAPI](https://github.com/miozune/AtCoderUsersAPI)を参照のこと**
+
+## 技術
+
+[ランキングページ](https://beta.atcoder.jp/ranking)のユーザー情報をPythonでスクレイピング  
 内容はFirebase Realtime Databaseに保存  
 Herokuにdeploy
