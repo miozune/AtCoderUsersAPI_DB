@@ -73,10 +73,21 @@ def main():
             for el in user_info:
                 if pq(el).children().eq(0).text() == 'twitter ID':
                     twitter_id = pq(el).find('a').text()[1:]
+                    # 空文字やめて
+                    if not twitter_id:
+                        twitter_id = None
+                        break
+                    # @から始まるものを救済
                     if twitter_id[0] == '@':
                         twitter_id = twitter_id[1:]
+                    # invalidなIDは弾く
                     if re.search(r'[^a-zA-Z0-9_]', twitter_id):
                         twitter_id = None
+                        break
+                    # @だった場合救済措置で空文字になる
+                    if twitter_id == '':
+                        twitter_id = None
+                        break
 
             updated = str(datetime.datetime.today())
 
