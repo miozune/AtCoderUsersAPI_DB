@@ -73,6 +73,8 @@ def main():
             for el in user_info:
                 if pq(el).children().eq(0).text() == 'twitter ID':
                     twitter_id = pq(el).find('a').text()[1:]
+                    if twitter_id[0] == '@':
+                        twitter_id = twitter_id[1:]
                     if re.search(r'[^a-zA-Z0-9_]', twitter_id):
                         twitter_id = None
 
