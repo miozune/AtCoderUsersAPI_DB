@@ -21,11 +21,12 @@ def main():
 
     email = os.environ.get('EMAIL')
     password = os.environ.get('PASSWORD')
+    user = auth.sign_in_with_email_and_password(email, password)
 
-    if not os.getenv('CONTINUE'):
-        print('set page_id')
-        os.environ['CONTINUE'] = '1'
-    page_id = int(os.environ.get('CONTINUE'))
+    page_id = db.child('continuation').get(user['idToken']).val()
+    if not page_id:
+        db.child('continuation').set(1, user['idToken'])
+        page_id = 1
 
     while True:
         user = auth.sign_in_with_email_and_password(email, password)
@@ -41,6 +42,7 @@ def main():
             print('Table is empty. Back to page 1.')
             print('#' * 50)
             page_id = 1
+            db.child('continuation').set(page_id, user['idToken'])
             continue
 
         for tr in table:
@@ -126,6 +128,7 @@ def main():
             sleep(interval)
 
         page_id += 1
+        db.child('continuation').set(page_id, user['idToken'])
 
 
 if __name__ == '__main__':
