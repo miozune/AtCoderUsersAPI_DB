@@ -53,7 +53,7 @@ def main():
             else:
                 formal_country_name = None
             crown = pq(tr).children().eq(1).children('img').attr('src')
-            crown = crown.split('/public/img/icon/')[1].split('.gif')[0] if crown else None
+            crown = crown.split('/assets/icon/')[1].split('.gif')[0] if crown else None
             username = pq(tr).children().eq(1).children('.username').text()
             user_color_elem = pq(tr).children().eq(1).children('.username').children()
             user_color = user_color_elem.attr('class').replace('user-', '') if user_color_elem.attr('class') \
